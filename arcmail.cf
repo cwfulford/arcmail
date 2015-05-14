@@ -1,0 +1,19 @@
+# The stanza headers are maildomains which are extracted from the command
+# line when arcmail is invoked. The maildomain must be terminated with 
+# a colon (:).
+#
+# Multiple stanza headers may be used with same configuration.
+# Equates must be proceded by white space and no hash (#) symbol.
+# 
+# The stanza must finish with a blank line.
+
+qsl-tenders.co.uk:
+snap-edition.co.uk:
+	basedir=/var/qmail
+	proto=ssh
+	max=5000
+
+fulford.net:
+	basedir=/var/mail
+	proto=ssh
+	max=150

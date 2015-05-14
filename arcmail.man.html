@@ -1,0 +1,290 @@
+
+<p><a href="#heading1">NAME</a><br/>
+<a href="#heading2">SYNOPSIS</a><br/>
+<a href="#heading3">AVAILABILITY</a><br/>
+<a href="#heading4">DESCRIPTION</a><br/>
+<a href="#heading5">OPTIONS</a><br/>
+<a href="#heading6">FILES</a><br/>
+<a href="#heading7">EXAMPLES</a><br/>
+<a href="#heading8">SEE ALSO</a><br/>
+<a href="#heading9">AUTHOR</a><br/>
+<a href="#heading10">HISTORY</a><br/>
+
+</p>
+<hr/>
+
+
+<h2 id="heading1">NAME
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><a href="./scripts.php?script=<a href="./scripts.php?script=arcmail">arcmail</a>"><a href="./scripts.php?script=arcmail">arcmail</a></a></b>
+- moves old mail from a users current Maildir mailbox. The
+mail is sorted into annual archive folders.</p>
+
+<h2 id="heading2">SYNOPSIS
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><a href="./scripts.php?script=<a href="./scripts.php?script=arcmail">arcmail</a>"><a href="./scripts.php?script=arcmail">arcmail</a></a></b>
+[<b>-c</b> <i>&lt;config_file&gt;</i>] [<b>-d</b>]
+[<b>-l</b> ] [<b>-m</b> <i>&lt;max&gt;</i>] [<b>-n</b> ]
+[<b>-v</b> ] <i>&lt;mail_account&gt;</i> | [<b>-V</b> ]</p>
+
+<h2 id="heading3">AVAILABILITY
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><a href="./scripts.php?script=<a href="./scripts.php?script=arcmail">arcmail</a>"><a href="./scripts.php?script=arcmail">arcmail</a></a></b>
+is a Bourne shell script which should work equally well on
+all versions of UNIX, Linux and Mac OS X.</p>
+
+<h2 id="heading4">DESCRIPTION
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><a href="./scripts.php?script=<a href="./scripts.php?script=arcmail">arcmail</a>"><a href="./scripts.php?script=arcmail">arcmail</a></a></b>
+uses &quot;<b>ssh</b>&quot; to connect to a <b>postfix</b>
+mail server to archive mail where the number of messages
+held in and INBIX exceeds the prescribed limit.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The limit may
+be set on the command line or in the configuration file.
+(The default limit is 5000).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The oldest
+messages are sorted by the year of last modification and are
+deposited in annualised subfolders of
+&quot;<i>.Archive</i>&quot;. E.g.
+&quot;<i>.Archive.2014</i>&quot;.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The script was
+developed to assist a client company which experiencing
+perfomance problems with INBOXes with some key workers
+holding in excess of 14,000 messages in their INBOX. For
+legal reasons the company was anxious to retain access to
+all old e-mail. By using unsubscribed archive folders the
+burdon on the IMAP server and the local Apple e-mail clients
+is much reduced while still retaining occasional access via
+webmail (using <b>Horde</b> in this instance). Access by the
+usual mail client is still available at a pinch but the
+burden on both client and server is much reduced.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the archive
+folders do not exist they are created as required by the
+script. <b>NB .</b> The script expects that the
+administrator will have <b>ssh</b> access to the mail server
+and will be able to use <b>sudo</b> to obtain superuser
+privileges.</p>
+
+<h2 id="heading5">OPTIONS
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<colgroup><col width="11%"></col>
+<col width="3%"></col>
+<col width="4%" class="center"></col>
+<col width="82%"></col>
+</colgroup>
+<tr valign="top" align="left">
+<td></td>
+<td>
+
+
+<p style="margin-top: 1em"><b>-c</b></p></td>
+<td></td>
+<td>
+
+
+<p style="margin-top: 1em">Use the specified configuration
+file in preference to the default
+<i>&quot;/usr/local/etc/<a href="./scripts.php?script=arcmail.cf">arcmail.cf</a>&quot;</i>. If no
+configuration file is found the script will print an error
+message to screen and will terminate.</p></td></tr>
+</table>
+
+<p style="margin-left:18%; margin-top: 1em">Options set on
+the command line supercede those found in the <i>config</i>
+file.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<colgroup><col width="11%"></col>
+<col width="3%"></col>
+<col width="4%" class="center"></col>
+<col width="82%"></col>
+</colgroup>
+<tr valign="top" align="left">
+<td></td>
+<td>
+
+
+<p style="margin-top: 1em"><b>-d</b></p></td>
+<td></td>
+<td>
+
+
+<p style="margin-top: 1em">Set debug mode on. The <b>-x</b>
+option is set within the shell and each command in the
+script is echoed to the console.</p></td></tr>
+<tr valign="top" align="left">
+<td></td>
+<td>
+
+
+<p><b>-l</b></p></td>
+<td></td>
+<td>
+
+
+<p>Use the local syslog facility to log that the check has
+been made and record the number of messages returned.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-m</b>
+<i>&lt;max&gt;</i></p>
+
+<p style="margin-left:18%;">Messages in excess of the
+<i>maximum</i> theshold will be moved to the <i>.Archive</i>
+subfolders.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<colgroup><col width="11%"></col>
+<col width="3%"></col>
+<col width="4%" class="center"></col>
+<col width="17%"></col>
+<col width="65%"></col>
+</colgroup>
+<tr valign="top" align="left">
+<td></td>
+<td>
+
+
+<p><b>-n</b></p></td>
+<td></td>
+<td>
+
+
+<p><i>&lt;mail_addr&gt;</i></p></td>
+<td>
+</td></tr>
+</table>
+
+<p style="margin-left:18%; margin-top: 1em">Notifications
+of the number of messages moved will be sent to &quot;
+<i>mail_addr</i>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<colgroup><col width="11%"></col>
+<col width="3%"></col>
+<col width="4%" class="center"></col>
+<col width="31%"></col>
+<col width="51%"></col>
+</colgroup>
+<tr valign="top" align="left">
+<td></td>
+<td>
+
+
+<p style="margin-top: 1em"><b>-v</b></p></td>
+<td></td>
+<td>
+
+
+<p style="margin-top: 1em">Set verbose mode on.</p></td>
+<td>
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><i>&lt;mail_address&gt;</i></p>
+
+<p style="margin-left:18%;">If the mail domain cannot be
+resolved then an error message is printed and the script
+exits.</p>
+
+<p style="margin-left:18%; margin-top: 1em">The mail domain
+name and mail user name is used to find the path to the
+INBOX current folder on the remote server.</p>
+
+<p style="margin-left:18%; margin-top: 1em">The base
+directory is expected to be
+&quot;<i>/var/qmail/mailnames/</i>&quot; but this may be set
+in the <i>config</i> file.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<colgroup><col width="11%"></col>
+<col width="3%"></col>
+<col width="4%" class="center"></col>
+<col width="54%"></col>
+<col width="28%"></col>
+</colgroup>
+<tr valign="top" align="left">
+<td></td>
+<td>
+
+
+<p><b>-V</b></p></td>
+<td></td>
+<td>
+
+
+<p>Print the version details and exit.</p></td>
+<td>
+</td></tr>
+</table>
+
+<h2 id="heading6">FILES
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i><a href="./scripts.php?script=arcmail.cf">arcmail.cf</a></i>.</p>
+
+<h2 id="heading7">EXAMPLES
+</h2>
+
+
+<pre style="margin-left:22%; margin-top: 1em"><a href="./scripts.php?script=arcmail">arcmail</a> -v -l -m 500 <a href="mailto:fulford@fulford.net" title="Send mail to Clifford W Fulford">fulford@fulford.net</a></pre>
+
+
+<p style="margin-left:11%; margin-top: 1em">If
+&quot;<i>fulford.net</i>&quot; can be successfully resolved
+a <b>ssh</b> connection is made to the host and the number
+of messages in
+<i>/var/qmail/mailnames/fulford.net/fulford/Maildir/cur</i>
+are counted.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the total
+exceeds the maximum of 500 set with the <b>-m</b> option the
+oldest messages will sorted by the year of last change and
+moved to mailboxes designated <i>.Archive.2013,
+.Archive.2014</i>, <i>.Archive.2015</i> etc.</p>
+
+<h2 id="heading8">SEE ALSO
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><a href="./scripts.php?script=chkmail&amp;man=y">chkmail</a>,
+<a href="./scripts.php?script=lsbounced&amp;man=y">lsbounced</a>, <i><a href="./scripts.php?script=<a href="./scripts.php?script=msg_cnt">msg_cnt</a>"><a href="./scripts.php?script=msg_cnt">msg_cnt</a></a></i>, <i><a href="./scripts.php?script=<a href="./scripts.php?script=msg_del">msg_del</a>"><a href="./scripts.php?script=msg_del">msg_del</a></a></i>.</p>
+
+<h2 id="heading9">AUTHOR
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Clifford W
+Fulford, <a href="http://www.citylinux.com"
+title="Go to the City Linux homepage">
+City Linux
+</a>. Contact <a href="mailto:fulford@fulford.net" title="Send mail to Clifford W Fulford">fulford@fulford.net</a> or +44
+(0)709 229 5385.</p>
+
+<h2 id="heading10">HISTORY
+</h2>
+<hr/>
