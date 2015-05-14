@@ -1,0 +1,272 @@
+.TH CHKMAIL 8l "28th April 2015 r1.186
+.SH NAME
+.B chkmail
+- checks the availability of a mail account on a remote IMAP server and 
+optionaly prints and or logs the number of messages in the nominated mailboxes.
+A warning threshold may be set for the number of messages and messages exceeding
+the threshold may be deleted.
+.SH SYNOPSIS
+\fBchkmail\fR
+[\fB-a \fI<mail_addr\fR]
+[\fB-c \fI<config_file>\fR]
+[\fB-d\fR]
+[\fB-f\fR]
+[\fB-i \fI<imap_server>\fR]
+[\fB-L \fR]
+[\fB-l \fR]
+[\fB-m \fI<mailbox>\fR]
+[\fB-n \fR]
+[\fB-P \fI<passwd>\fR]
+[\fB-p \fI<port_no>\fR]
+[\fB-u \fI<login_name>\fR]
+[\fB-v \fR]
+[\fB-w \fI<#_messages>\fR]
+[\fB-x \fR]
+[\fIconfig_id>\fR] |
+[\fB-V \fR]
+.br
+.SH AVAILABILITY
+.B chkmail
+is a Bourne shell script which should work equally well on all versions of UNIX,
+Linux and Mac OS X.
+.SH DESCRIPTION
+.B chkmail
+uses "\fBtelnet\fR"
+and "\fBexpect\fR"
+to connect to an IMAP server and examine nominated mailboxes. The utility
+optionally prints the number of messages in each specified mailbox. The
+script can
+log the presence of oversize mailboxes, advise the owners of the mailbox
+regarding the need for good house keeping and/or purge the excess mail.
+.LP
+I wrote this one after I discovered that a client who was complaining about
+POP3 performance on a 1 and 1 server in the cloud, had over 20,000 messages in
+her in-boxes, 13.5 thousand of them in a single mailbox. Nothing was ever
+being deleted or archived, not even spam. Manipulating the mailboxes
+through the Mac-OS X mail client was a nightmare. I needed  a tool that
+would monitor the the remote mailboxes and return data that I could feed
+into alerts and e-mail reminders.
+.B NB .
+A short client id can be given which makes it easy to use in an ad hoc fashion
+from the terminal. The id is used to look up the details of the mail account
+in the configuration file. 
+.SH OPTIONS
+.TP 5
+\fB-a \fI<mail_address>\fR
+In these days of virtual mail boxes the users mail address is usually the
+login name for the IMAP mail account.
+The Unix login name is still used where
+the user has an account on the box (well it is on my boxes)  and this can be
+given here or sent with the \fB-u\fR option below.
+.B NB
+The command line options supercede the configuration file settings.
+.TP 5
+.B -c
+Use the specified configuration file in preference to the default
+\fI"/usr/local/etc/chkmail.cf"\fR.
+If no configuration file is found the 
+script will attempt to soldier on with whatever information was supplied from
+the command line. If all else fails .B chkmail will attempt to check
+"\fIINBOX"\fR for the user invoking the script. The IMAP server name
+being constructed from the local 
+domain (\fIhostname -d\fR).  It would be more sensible to terminate
+with syntax message on standard error but this does make some sort of sense
+if like me you want a lazy way to count the messages
+in your own in-box.
+.TP 5
+.B -d
+Set debug mode on. 
+The \fB-x\fR option is set within the shell
+and each command in the script is echoed to the console.
+.TP 5
+\fB-i \fI<imap_server_name>\fR.
+The name or IP address of the server to which the 
+.B expect 
+script should connect.
+.TP 5
+.B -L
+List the available mailboxes for this mail user account. 
+.TP 5
+.B -l
+Use the local syslog facility to log that the check has been made and 
+record the number of messages returned.
+.TP 5
+\fB-m \fI<mailbox>\fR
+Count the number of messages in the nominated mailboxes. The option is redundant
+if the mailbox id is used.
+.TP 5
+\fB-n\fR
+Notify the user if they have exceeded the warning threshold for the number of
+messages in their mail box (see \fB-w\fR option below).
+.TP 5 
+\fB-P \fI<password>\fR.
+The password for the mail user account. It is possible to use this option in combination with the configuration file if you don't want to store 
+passwords on disc.
+.TP 5
+\fB-p \fI<port_number>\fR.
+The ports that
+.B chkmail
+knows how to handle are 143, 993 and 22.
+.IP
+If port 143 is used 
+.B chkmail
+will access the mail account using 
+.B expect 
+and
+.B telnet
+to send the appropriate
+.B IMAP
+commands.
+.IP
+If port 993 is selected
+.B chkmail 
+will try to use
+.B openssl
+with 
+.BR expect .
+.IP
+Use of both ports 143 and 993 will be relatively slow and require knowledge of the
+mail account password which may be passed on the command line or stored in
+.BR chkmail.cf .
+Using these options does however have the advantage that no knowledge of the 
+back end mail store architecture is required.
+.IP
+Using 22 (\fBssh\fR)
+has the advantage of being much quicker and the user only requires 
+.B sudo
+root access. At present however only 
+.B Courier
+mailboxes, as configured by 
+.B Plesk
+under 
+.B CentOS 
+.BR 6 ,
+are supported.
+.TP 5
+\fB-s\fR
+Force the script to use the imap protocol to contact the mail host.
+.TP 5
+\fB-u \fI<username>\fR.
+The name for the IMAP account login. In reality this duplicates the 
+.B -a
+option but it just seemed more intuitive to have both. 
+.TP 5
+.B -v
+Set verbose mode on. Without this option 
+.B chkmail
+reports only on those mail boxes where the number of messages either
+equals or exceeds the trigger value for warnings. With the
+.B -v
+option 
+.B chkmail
+always reports the checking of a mail box and the number of messages found.
+.TP 5
+\fB-w\fI <#_no_of messages>\fR
+Sets the threshold for the number of messages a mail box may hold before
+a warning is issued. If the 
+.B -n
+option is used warning message will be sent by e-mail to the mail box owner or
+the person defined in the configuration file with the \fIalert\fR equate, a
+warning is also printed to standard error.
+.IP
+The warning threshold may also be set in the configuration file but will be
+over ridden by the value set here.
+.IP
+If used with the
+.B -x
+option the excess messages will be deleted.
+.TP 5
+\fB-x\fR
+To be used with great caution the \fB-x\fR option expunges all messages 
+exceeding the warning threshold. The option was introduced when I discovered
+that a client had 48.5 thousand messages in an un-monitored INBOX and was 
+no longer able to access or delete messages with the locally available mail
+clients.
+.TP 5
+<\fIconfig_id\fR>
+The configuration identity is the key to the stanza in the configuration
+file which will be used to determine the values to be used by the script.
+The configuration equates recognised by the scripts are:
+.IP
+.nf
+.ft CW
+addr      Email address to be checked.
+imap      IMAP server name or IP.
+passwd    Password for the email account.
+alert     Recipient address for alerts.
+warn      Trigger value for e-mail alerts.
+folders   The mailbox folders to be checked.
+.ft R
+.fi
+.TP 5
+\fB-V\fR Print the version details and exit.
+.SH FILES
+.IR chkmail.cf ,
+.IR msg_cnt ,
+.IR msg_del .
+.SH EXAMPLES
+.IP
+.ft CW
+chkmail flash
+.ft R
+.LP
+The id "flash" is looked up in the default configuration file
+\fI/usr/local/etc/chkmail.cf\fR. Using the e-mail account name and 
+password found there, the script calls an \fBexpect\fR script 
+.I "/usr/local/etc/msg_cnt" 
+to login to the IMAP server and
+get a count of the messages in the nominated mailbox. If the number of
+messages exceeds the default of 100 a warning is printed to screen.
+.IP
+.nf
+.ft CW
+chkmail -a arthur.pendragon@camelot.co.uk \\
+.br
+-i imap.mailservice.com -l -p password  -m INBOX.Spam 
+.ft R
+.fi
+.LP
+No configuration id has been given so 
+\fBchkmail\fR
+will only use the command line options.
+An IMAP login will be attempted 
+on imap.mailservice.com using the user name arthur.pendragon@camelot.co.uk
+and the password "password" as given on the command line. The check will
+be performed on the folder "INBOX.Spam"and the total number of messages
+returned will be logged using the local syslog facility.  A warning will
+be printed to screen if the folder holds more than the default value of 100.
+.IP
+.nf
+.ft CW
+chkmail  -v -p 993 -w 1000 -x -n dermot 
+.ft R
+.fi
+.LP
+The script will lookup the details for "\fIdermot\fR" in the default
+configuration file
+.IR /usr/local/etc/chkmail.cf .
+The account will be accessed using 
+.B SSL
+(secure sockets layer) and the INBOX, together with any folders specified in
+the stanza labelled
+.IR dermot ,
+will be checked and the number of messages counted.
+If there are more than 1000
+messages in any folder being checked, the nominated person 
+(which may or may not be the account holder) will be notified and requested
+to ensure that excess messages are removed. The
+.B -x
+option will also ensure that messages in excess of 1000 will be deleted.
+.SH BUGS
+The script is quite crude and has very little, if any,  error checking.
+The consequences of unexpected input are untested.
+.SH SEE ALSO
+.IR chkdf ,
+.IR chkftpd ,
+.IR chkfw ,
+.IR chkup ,
+.IR msg_cnt ,
+.IR msg_del .
+.SH AUTHOR
+Clifford W Fulford, City Linux. Contact fulford@fulford.net or +44 (0)709 229 5385.
+.SH HISTORY
