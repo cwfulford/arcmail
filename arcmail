@@ -1,5 +1,5 @@
 #!/bin/bash
-# $Id: arcmail,v 1.31 2015/05/15 17:04:38 fulford Exp fulford $
+# $Id: arcmail,v 1.31 2015/05/15 17:04:38 fulford Exp $
 # $Source: /src/merlin/usr/local/etc/RCS/arcmail,v $
 # $Revision: 1.31 $
 # Author C W Fulford.
@@ -8,7 +8,7 @@
 # For assistance contact fulford@fulford.net 0709 229 5385
 ########################################################################
 cmd=`basename $0`
-ver=`echo "$Id: arcmail,v 1.31 2015/05/15 17:04:38 fulford Exp fulford $"|awk '{print $3,$4,$5}'`
+ver=`echo "$Id: arcmail,v 1.31 2015/05/15 17:04:38 fulford Exp $"|awk '{print $3,$4,$5}'`
 syntax="$cmd [[-c <configfile>] [-d] [-l] [-m <max>] [-v] <email_address>]|[-V]"
 while [ $# -gt 0 ] ;do
 	case $1 in 
