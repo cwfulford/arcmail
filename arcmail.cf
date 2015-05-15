@@ -11,7 +11,7 @@
 
 dougal-dog.co.uk:
 snap.dragon.co.uk:
-	basedir=/var/qmail
+	basedir=/var/qmail/mailnames
 	proto=ssh
 	max=5000
 
