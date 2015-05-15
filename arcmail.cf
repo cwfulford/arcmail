@@ -1,3 +1,5 @@
+<pre>
+
 # The stanza headers are maildomains which are extracted from the command
 # line when arcmail is invoked. The maildomain must be terminated with 
 # a colon (:).
@@ -7,8 +9,8 @@
 # 
 # The stanza must finish with a blank line.
 
-qsl-tenders.co.uk:
-snap-edition.co.uk:
+dougal-dog.co.uk:
+snap.dragon.co.uk:
 	basedir=/var/qmail
 	proto=ssh
 	max=5000
@@ -17,3 +19,19 @@ fulford.net:
 	basedir=/var/mail
 	proto=ssh
 	max=150
+######################################################################
+# This program is free software: you can redistribute it and or      #
+# modify it under the terms of the Lesser GNU General Public License #
+# as published by the Free Software Foundation, either version 3 of  #
+# the License, or (at your option) any later version.                #
+#                                                                    #
+# This program is distributed in the hope that it will be useful,    #
+# but WITHOUT ANY WARRANTY; without even the implied warranty of     #    
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the      #
+# GNU General Public License for more details.                       #
+#                                                                    # 
+# A copy of the Lesser GNU General Public License and the GNU        #
+# General Public License is available at                             #
+# &#60;http://www.gnu.org/licenses/&#62;.                                    #
+######################################################################
+</pre>
