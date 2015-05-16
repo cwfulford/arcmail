@@ -1,14 +1,14 @@
 #!/bin/bash
-# $Id: arcmail,v 1.35 2015/05/16 16:42:09 fulford Exp fulford $
+# $Id: arcmail,v 1.36 2015/05/16 17:16:54 fulford Exp fulford $
 # $Source: /src/merlin/usr/local/etc/RCS/arcmail,v $
-# $Revision: 1.35 $
+# $Revision: 1.36 $
 # Author C W Fulford.
 # Copyright 2015 (c) C W Fulford.
 # Licensed for public use under the LGPL, .
 # For assistance contact fulford@fulford.net 0709 229 5385
 ########################################################################
 cmd=`basename $0`
-ver=`echo "$Id: arcmail,v 1.35 2015/05/16 16:42:09 fulford Exp fulford $"|awk '{print $3,$4,$5}'`
+ver=`echo "$Id: arcmail,v 1.36 2015/05/16 17:16:54 fulford Exp fulford $"|awk '{print $3,$4,$5}'`
 syntax="$cmd [[-c <configfile>] [-d] [-i <company_id>] [-l] [-m <max>] [-v] <email_address>]|[-V]"
 while [ $# -gt 0 ] ;do
 	case $1 in 
@@ -18,7 +18,7 @@ while [ $# -gt 0 ] ;do
 		-l) log=:; shift;;
 		-m) clmax=$2;shift 2;;
 		-v) verbose=:;shift;;
-		-V) echo "$cmd $Revision: 1.35 $ $Date: 2015/05/16 16:42:09 $"|awk '{print $1,$3,$6}';exit;;  
+		-V) echo "$cmd $Revision: 1.36 $ $Date: 2015/05/16 17:16:54 $"|awk '{print $1,$3,$6}';exit;;  
 		 *@*) ma=$1;shift ;;
 	 	 *) echo "$syntax">&2; exit 1;;
 	esac
@@ -35,7 +35,6 @@ getent hosts $md 2>&1 >/dev/null ||{
 	echo "$cmd can't find IP address for $md">&2 
 	exit 1 
 }  
-[ "$verbose" ]&& echo "$cmd: connecting to $md."
 mu=`echo $ma|awk -F@ '{print $1}'`
 
 config=${config:-/usr/local/etc/${cmd}.cf}
@@ -50,16 +49,17 @@ archf=$maildir/.Archive
 proto=${proto:-ssh}
 tmp=/tmp/$cmd$$
 
-[ $max -eq $((($max*2)/2)) ] ||{
-	echo "cmd: max set must be a positive integer" >&2
+[ "$max" -ge 0 ] >/dev/null 2>&1 ||{
+	echo "$cmd: max must be set to a positive integer" >&2
 	exit 1
 }
-
 [ -n "$co" ]||{
 	echo "$cmd: Warning - company id required for reporting" >&2
 }
 [ "$verbose" ] && echo "$cmd: maximum messages set to $max."
-if [ "$proto" == "ssh" ] ;then
+[ "$verbose" ]&& echo "$cmd: connecting to $md."
+
+f [ "$proto" == "ssh" ] ;then
 	c=`ssh $md "sudo bash -c \"cd $maildir/cur;ls -lt\""|
 		sed -e '/^total/d'|
 		tee $tmp|wc -l`
