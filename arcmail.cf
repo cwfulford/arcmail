@@ -11,11 +11,14 @@
 
 dougal-dog.co.uk:
 snap.dragon.co.uk:
+	co=imap.dougal.roundabout.com
 	basedir=/var/qmail/mailnames
 	proto=ssh
 	max=5000
 
+citylinux.com:
 fulford.net:
+	co=fcl
 	basedir=/var/mail
 	proto=ssh
 	max=150
