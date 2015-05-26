@@ -1,7 +1,7 @@
 #!/bin/bash
-# $Id: arcmail,v 1.49 2015/05/26 08:05:19 fulford Exp fulford $
+# $Id: arcmail,v 1.50 2015/05/26 11:55:58 fulford Exp fulford $
 # $Source: /src/merlin/usr/local/etc/RCS/arcmail,v $
-# $Revision: 1.49 $
+# $Revision: 1.50 $
 # Author C W Fulford.
 # Copyright 2015 (c) C W Fulford.
 # Licensed for public use under the LGPL, .
@@ -9,7 +9,7 @@
 ########################################################################
 cmd=`basename $0`
 chkmail=`dirname $0`/chkmail
-ver=`echo "$Id: arcmail,v 1.49 2015/05/26 08:05:19 fulford Exp fulford $"|awk '{print $3,$4,$5}'`
+ver=`echo "$Id: arcmail,v 1.50 2015/05/26 11:55:58 fulford Exp fulford $"|awk '{print $3,$4,$5}'`
 syntax="$cmd [[-c <configfile>] [-d] [-i <company_id>] [-l] [-m <max>] [-v] <email_address>]|[-V]"
 while [ $# -gt 0 ] ;do
 	case $1 in 
@@ -19,7 +19,7 @@ while [ $# -gt 0 ] ;do
 		-l) log=:; shift;;
 		-m) clmax=$2;shift 2;;
 		-v) verbose=:;shift;;
-		-V) echo "$cmd $Revision: 1.49 $ $Date: 2015/05/26 08:05:19 $"|awk '{print $1,$3,$6}';exit;;  
+		-V) echo "$cmd $Revision: 1.50 $ $Date: 2015/05/26 11:55:58 $"|awk '{print $1,$3,$6}';exit;;  
 	     [^-]*@*) ma=$1;shift;;
 	         *)echo "$syntax">&2; exit 1;;
 	esac
@@ -44,7 +44,7 @@ eval `sed <$config -ne "/^$md:/,/^$/{/^[\t ]*[^#].*=.*/p}"`
 max=${max:-5000}
 max=${clmax:-$max}
 basedir=${basedir:-/var/qmail/mailnames}
-maildir=$basedir/$md/$mu/Maildir
+maildir=`echo "$basedir/$md/$mu/Maildir"`
 archf=$maildir/.Archive
 proto=${proto:-ssh}
 tmp=/tmp/$cmd$$
@@ -59,56 +59,53 @@ tmp=/tmp/$cmd$$
 [ "$verbose" ] && echo "$cmd: maximum messages set to $max."
 [ "$verbose" ]&& echo "$cmd: connecting to $md."
 
-if [ "$proto" == "ssh" ] ;then
-	ssh $md "sudo bash -c \"
-		[ -d $maildir/cur ] &&{
-	       		cd $maildir/cur 2>/dev/null &&
-			ls -lt \"
-	"|&
-		sed -e '/^total/d'|
-		tee $tmp |
-		c=`wc -l`
-		[ -z $c ] && {
-			echo "$cmd: \"$maildir/cur\" not found on $md" >&2
-			exit 1
-		}
-		[ $c -le $max ] && {
-			echo "$cmd: $mu has $c current messages only" >&2
-			exit 1
-		}
-	f=`expr $max + 1`
-	[ "$verbose" ] &&{
+[ "$proto" == "ssh" ] && connect=ssh 
+c=`$connect  $md "sudo bash -c \"
+	if [ -d $maildir/cur ];then
+		cd $maildir/cur
+		ls -lt
+	else
+		echo $maildir not found on $md >&2;exit 1 
+	fi\"
+"| sed  -e '/^total/d'|tee $tmp | wc -l`
+[ $c -eq 0  ] && exit
+[ "$c" -le $max ] && {
+	echo "$cmd: $mu has $c current messages only" >&2
+	exit 1
+}
+f=`expr $max + 1`
+[ "$verbose" ] &&{
        		echo "$cmd: moving `expr $c - $max` messages for $mu."
-	}
-	cat $tmp|sed -ne ''$f',$p'|awk '{print $8}'|uniq|
-	while read yr;do
-		archive=$archf.$yr
-		ssh $md "sudo bash -c \"
-			[ -d $archf ] ||{
-				mkdir -m 700 $archf
-				chown -R popuser.popuser $archf
-			}
-			[ -d $archive ] ||{
-		       		mkdir -p -m 700 $archive/{cur,new,tmp}
-				touch $archive/maildirfolder
-				chmod 600 $archive/maildirfolder
-				chown -R popuser.popuser $archive
-			}\""
-	done
-	cat $tmp|sed -ne ''$f',$p'|
-	awk -v cmd=$cmd: -v v=$verbose '{
-		printf("ssh '$md' sudo mv '$maildir'/cur/"$9 " '$archf'."$8"/cur")|"sh";close("sh")
-		mvd[$8]++
-	}END{
-		if(v){
-			for (c in mvd){
-			   print(cmd,mvd[c],"messages moved to",c,"archive.")
-			}
+}
+cat $tmp|sed -ne ''$f',$p'|awk '{print $8}'|uniq|
+while read yr;do
+	archive=$archf.$yr
+	ssh $md "sudo bash -c \"
+		[ -d $archf ] ||{
+			mkdir -m 700 $archf
+			chown -R popuser.popuser $archf
 		}
-	}'
-	etot=`ssh $md "sudo find $maildir/cur -type f" |wc -l`
-	mtot=`expr $c - $etot`
-fi
+		[ -d $archive ] ||{
+	       		mkdir -p -m 700 $archive/{cur,new,tmp}
+			touch $archive/maildirfolder
+			chmod 600 $archive/maildirfolder
+			chown -R popuser.popuser $archive
+		}\""
+done
+cat $tmp|sed -ne ''$f',$p'|
+awk -v cmd=$cmd: -v v=$verbose '{
+	printf("ssh '$md' sudo mv '$maildir'/cur/"$9 " '$archf'."$8"/cur")|"sh";close("sh")
+	mvd[$8]++
+}END{
+	if(v){
+		for (c in mvd){
+		   print(cmd,mvd[c],"messages moved to",c,"archive.")
+		}
+	}
+}'
+etot=`ssh $md "sudo find $maildir/cur -type f" |wc -l`
+mtot=`expr $c - $etot`
+
 [ "$verbose" ]&&{
 	echo "$cmd: $etot messages remain in $mu's current INBOX at $md."
 }
@@ -118,7 +115,7 @@ fi
 	if [ -x $chkmail ];then
 	       	$chkmail -l $ma 
 	else
-		echo "$cmd: Can\47t update log files, you may need to run \"chkmail -l <user_id>\"" >&2
+		echo -e "$cmd: Can\'t update log files, you may need to run \"chkmail -l <user_id>\"" >&2
 	fi
 }
 rm $tmp
