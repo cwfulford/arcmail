@@ -1,7 +1,7 @@
 #!/bin/bash
-# $Id: arcmail,v 1.47 2015/05/26 08:03:57 fulford Exp fulford $
+# $Id: arcmail,v 1.48 2015/05/26 08:04:45 fulford Exp fulford $
 # $Source: /src/merlin/usr/local/etc/RCS/arcmail,v $
-# $Revision: 1.47 $
+# $Revision: 1.48 $
 # Author C W Fulford.
 # Copyright 2015 (c) C W Fulford.
 # Licensed for public use under the LGPL, .
@@ -9,7 +9,7 @@
 ########################################################################
 cmd=`basename $0`
 chkmail=`dirname $0`/chkmail
-ver=`echo "$Id: arcmail,v 1.47 2015/05/26 08:03:57 fulford Exp fulford $"|awk '{print $3,$4,$5}'`
+ver=`echo "$Id: arcmail,v 1.48 2015/05/26 08:04:45 fulford Exp fulford $"|awk '{print $3,$4,$5}'`
 syntax="$cmd [[-c <configfile>] [-d] [-i <company_id>] [-l] [-m <max>] [-v] <email_address>]|[-V]"
 while [ $# -gt 0 ] ;do
 	case $1 in 
@@ -19,7 +19,7 @@ while [ $# -gt 0 ] ;do
 		-l) log=:; shift;;
 		-m) clmax=$2;shift 2;;
 		-v) verbose=:;shift;;
-		-V) echo "$cmd $Revision: 1.47 $ $Date: 2015/05/26 08:03:57 $"|awk '{print $1,$3,$6}';exit;;  
+		-V) echo "$cmd $Revision: 1.48 $ $Date: 2015/05/26 08:04:45 $"|awk '{print $1,$3,$6}';exit;;  
 	     [^-]*@*) ma=$1;shift;;
 	         *)echo "$syntax">&2; exit 1;;
 	esac
@@ -69,7 +69,7 @@ if [ "$proto" == "ssh" ] ;then
 		tee $tmp |
 		c=`wc -l`
 		[ -z $c ] && {
-			echo "$cmd: $maildir/cur not found on $$md" >&2
+			echo "$cmd: $maildir/cur not found on $md" >&2
 			exit 1
 		}
 		[ $c -le $max ] && {
