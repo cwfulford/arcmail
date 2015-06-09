@@ -1,7 +1,7 @@
 #!/bin/bash
-# $Id: arcmail,v 1.50 2015/05/26 11:55:58 fulford Exp $
+# $Id: arcmail,v 1.51 2015/06/09 13:48:17 fulford Exp fulford $
 # $Source: /src/merlin/usr/local/etc/RCS/arcmail,v $
-# $Revision: 1.50 $
+# $Revision: 1.51 $
 # Author C W Fulford.
 # Copyright 2015 (c) C W Fulford.
 # Licensed for public use under the LGPL, .
@@ -9,17 +9,21 @@
 ########################################################################
 cmd=`basename $0`
 chkmail=`dirname $0`/chkmail
-ver=`echo "$Id: arcmail,v 1.50 2015/05/26 11:55:58 fulford Exp $"|awk '{print $3,$4,$5}'`
+ver=`echo "$Id: arcmail,v 1.51 2015/06/09 13:48:17 fulford Exp fulford $"|awk '{print $3,$4,$5}'`
 syntax="$cmd [[-c <configfile>] [-d] [-i <company_id>] [-l] [-m <max>] [-v] <email_address>]|[-V]"
 while [ $# -gt 0 ] ;do
 	case $1 in 
-		-c) config=$2;shift 2;;
+		-c) if [ -f "$2" ];then
+		       	config=$2;shift 2
+	            else
+			    echo "$cmd: can't find $2">&2;exit 1
+		    fi;;
 		-d) set -x;debug=0;shift;;
 		-i) co=$2;shift 2;;
 		-l) log=:; shift;;
 		-m) clmax=$2;shift 2;;
 		-v) verbose=:;shift;;
-		-V) echo "$cmd $Revision: 1.50 $ $Date: 2015/05/26 11:55:58 $"|awk '{print $1,$3,$6}';exit;;  
+		-V) echo "$cmd $Revision: 1.51 $ $Date: 2015/06/09 13:48:17 $"|awk '{print $1,$3,$6}';exit;;  
 	     [^-]*@*) ma=$1;shift;;
 	         *)echo "$syntax">&2; exit 1;;
 	esac
@@ -37,10 +41,16 @@ getent hosts $md 2>&1 >/dev/null ||{
 }  
 mu=`echo $ma|awk -F@ '{print $1}'`
 
-config=${config:-/usr/local/etc/${cmd}.cf}
+for f in $config /usr/local/etc/arcmail.cf /usr/local/etc/chkmail.cf ;do
+	[ -r $f ] && exit
+done
 [ -r $config ] ||{ echo  "$cmd: Can\'t find $config"; exit 1 ;}
-eval `sed <$config -ne "/^$md:/,/^$/{/^[\t ]*[^#].*=.*/p}"`
+echo $config;exit
 
+eval `sed <$config -ne "/^$ma:/,/^$/{/^[\t ]*[^#].*=.*/p}"`
+
+echo $max
+read
 max=${max:-5000}
 max=${clmax:-$max}
 basedir=${basedir:-/var/qmail/mailnames}

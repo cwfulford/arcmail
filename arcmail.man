@@ -1,4 +1,4 @@
-.TH ARCMAIL 8l "14th May 2015 r1.50
+.TH ARCMAIL 8l "14th May 2015 r1.51
 .SH NAME
 .B arcmail
 - moves old mail from a users current Maildir mailbox. The mail is sorted
