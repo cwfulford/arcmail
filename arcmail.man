@@ -7,6 +7,7 @@ into annual archive folders.
 \fBarcmail\fR
 [\fB-c \fI<config_file>\fR]
 [\fB-d\fR]
+[\fB-i \fI<company id>\fR]
 [\fB-l \fR]
 [\fB-m \fI<max>\fR]
 [\fB-n \fR]
@@ -23,22 +24,22 @@ Linux and Mac OS X.
 uses "\fBssh\fR"
 to connect to a 
 .B postfix 
-mail server to archive mail where the number of messages held in and INBIX
+mail server to archive mail where the number of messages held in and INBOX
 exceeds the prescribed limit. 
 .LP
 The limit may be set on the command line or in the configuration file. (The
 default limit is 5000). 
 .LP
 The oldest messages are sorted by the year of last modification and 
-are deposited in annualised subfolders of "\fI.Archive\fR". E.g.
+are deposited in annualised sub-folders of "\fI.Archive\fR". E.g.
 "\fI.Archive.2014\fR".
 .LP
-The script was developed to assist a client company which experiencing perfomance
+The script was developed to assist a client company which experiencing performance
 problems with INBOXes with some key workers holding in excess of 14,000 messages
 in their INBOX. For legal reasons the company was anxious to retain access to all
-old e-mail. By using unsubscribed archive folders the burdon on the IMAP server
+old e-mail. By using unsubscribed archive folders the burden on the IMAP server
 and the local Apple e-mail clients is much reduced while still retaining 
-occasional access via webmail (using 
+occasional access via web-mail (using 
 .B Horde
 in this instance). Access by the usual mail client is still available at a pinch
 but the burden on both client and server is much reduced.
@@ -68,6 +69,10 @@ Set debug mode on.
 The \fB-x\fR option is set within the shell
 and each command in the script is echoed to the console.
 .TP 5
+.BI -i <company id>
+The company id is added to the logs. This is necessary if activity reports are
+to be generated for clients from the logs.
+.TP 5
 .B -l
 Use the local syslog facility to log that the check has been made and 
 record the number of messages returned.
@@ -75,9 +80,9 @@ record the number of messages returned.
 \fB-m \fI<max>\fR
 Messages in excess of the 
 .I maximum
-theshold will be moved to the 
+threshold will be moved to the 
 .I .Archive
-subfolders.
+sub-folders.
 .TP 5
 \fB-n\fR
 .I <mail_addr>
