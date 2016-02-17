@@ -1,5 +1,5 @@
 
-<p><a href="#heading1">NAME</a><br/>
+<p style="margin-left:11%"><a href="#heading1">NAME</a><br/>
 <a href="#heading2">SYNOPSIS</a><br/>
 <a href="#heading3">AVAILABILITY</a><br/>
 <a href="#heading4">DESCRIPTION</a><br/>
@@ -16,50 +16,36 @@
 
 <h2 id="heading1">NAME
 </h2>
-
-
-<p style="margin-left:11%; margin-top: 1em"><b><a href="./scripts.php?script=arcmail">arcmail</a></b>
+<p style="margin-left:11%;margin-left:11%; margin-top: 1em"><b><a href="./scripts.php?script=arcmail">arcmail</a></b>
 - moves old mail from a users current Maildir mailbox. The
 mail is sorted into annual archive folders.</p>
-
 <h2 id="heading2">SYNOPSIS
 </h2>
-
-
-<p style="margin-left:11%; margin-top: 1em"><b><a href="./scripts.php?script=arcmail">arcmail</a></b>
+<p style="margin-left:11%;margin-left:11%; margin-top: 1em"><b><a href="./scripts.php?script=arcmail">arcmail</a></b>
 [<b>-c</b> <i>&lt;config_file&gt;</i>] [<b>-d</b>]
 [<b>-i</b> <i>&lt;company id&gt;</i>] [<b>-l</b> ]
 [<b>-m</b> <i>&lt;max&gt;</i>] [<b>-n</b> ] [<b>-v</b> ]
 <i>&lt;mail_account&gt;</i> | [<b>-V</b> ]</p>
-
 <h2 id="heading3">AVAILABILITY
 </h2>
-
-
-<p style="margin-left:11%; margin-top: 1em"><b><a href="./scripts.php?script=arcmail">arcmail</a></b>
+<p style="margin-left:11%;margin-left:11%; margin-top: 1em"><b><a href="./scripts.php?script=arcmail">arcmail</a></b>
 is a Bourne shell script which should work equally well on
 all versions of UNIX, Linux and Mac OS X.</p>
-
 <h2 id="heading4">DESCRIPTION
 </h2>
-
-
-<p style="margin-left:11%; margin-top: 1em"><b><a href="./scripts.php?script=arcmail">arcmail</a></b>
+<p style="margin-left:11%;margin-left:11%; margin-top: 1em"><b><a href="./scripts.php?script=arcmail">arcmail</a></b>
 uses &quot;<b>ssh</b>&quot; to connect to a <b>postfix</b>
 mail server to archive mail where the number of messages
 held in and INBOX exceeds the prescribed limit.</p>
-
-<p style="margin-left:11%; margin-top: 1em">The limit may
+<p style="margin-left:11%;margin-left:11%; margin-top: 1em">The limit may
 be set on the command line or in the configuration file.
 (The default limit is 5000).</p>
-
-<p style="margin-left:11%; margin-top: 1em">The oldest
+<p style="margin-left:11%;margin-left:11%; margin-top: 1em">The oldest
 messages are sorted by the year of last modification and are
 deposited in annualised sub-folders of
 &quot;<i>.Archive</i>&quot;. E.g.
 &quot;<i>.Archive.2014</i>&quot;.</p>
-
-<p style="margin-left:11%; margin-top: 1em">The script was
+<p style="margin-left:11%;margin-left:11%; margin-top: 1em">The script was
 developed to assist a client company which experiencing
 performance problems with INBOXes with some key workers
 holding in excess of 14,000 messages in their INBOX. For
@@ -70,192 +56,65 @@ is much reduced while still retaining occasional access via
 web-mail (using <b>Horde</b> in this instance). Access by
 the usual mail client is still available at a pinch but the
 burden on both client and server is much reduced.</p>
-
-<p style="margin-left:11%; margin-top: 1em">If the archive
+<p style="margin-left:11%;margin-left:11%; margin-top: 1em">If the archive
 folders do not exist they are created as required by the
 script. <b>NB .</b> The script expects that the
 administrator will have <b>ssh</b> access to the mail server
 and will be able to use <b>sudo</b> to obtain superuser
 privileges.</p>
-
 <h2 id="heading5">OPTIONS
 </h2>
-
-
-<table width="100%" border="0" rules="none" frame="void"
-       cellspacing="0" cellpadding="0">
-<colgroup><col width="11%"></col>
-<col width="3%"></col>
-<col width="4%" class="center"></col>
-<col width="82%"></col>
-</colgroup>
-<tr valign="top" align="left">
-<td></td>
-<td>
-
-
-<p style="margin-top: 1em"><b>-c</b></p></td>
-<td></td>
-<td>
-
-
-<p style="margin-top: 1em">Use the specified configuration
+       
+<p style="margin-left:11%;margin-top: 1em"><b>-c</b>
+<p style="margin-left:11%;margin-top: 1em">Use the specified configuration
 file in preference to the default
 <i>&quot;/usr/local/etc/<a href="./scripts.php?script=arcmail.cf">arcmail.cf</a>&quot;</i>. If no
 configuration file is found the script will print an error
-message to screen and will terminate.</p></td></tr>
-</table>
-
-<p style="margin-left:18%; margin-top: 1em">Options set on
+message to screen and will terminate.</p>
+<p style="margin-left:11%;margin-left:18%; margin-top: 1em">Options set on
 the command line supercede those found in the <i>config</i>
 file.</p>
-
-<table width="100%" border="0" rules="none" frame="void"
-       cellspacing="0" cellpadding="0">
-<colgroup><col width="11%"></col>
-<col width="3%"></col>
-<col width="4%" class="center"></col>
-<col width="82%"></col>
-</colgroup>
-<tr valign="top" align="left">
-<td></td>
-<td>
-
-
-<p style="margin-top: 1em"><b>-d</b></p></td>
-<td></td>
-<td>
-
-
-<p style="margin-top: 1em">Set debug mode on. The <b>-x</b>
+       
+<p style="margin-left:11%;margin-top: 1em"><b>-d</b>
+<p style="margin-left:11%;margin-top: 1em">Set debug mode on. The <b>-x</b>
 option is set within the shell and each command in the
-script is echoed to the console.</p></td></tr>
-</table>
-
-
-<p style="margin-left:11%;"><b>-i</b><i>&lt;company</i><b>id&gt;</b></p>
-
-<p style="margin-left:18%;">The company id is added to the
+script is echoed to the console.</p>
+<p style="margin-left:11%;margin-left:11%;"><b>-i</b><i>&lt;company</i><b>id&gt;</b>
+<p style="margin-left:11%;margin-left:18%;">The company id is added to the
 logs. This is necessary if activity reports are to be
 generated for clients from the logs.</p>
-
-<table width="100%" border="0" rules="none" frame="void"
-       cellspacing="0" cellpadding="0">
-<colgroup><col width="11%"></col>
-<col width="3%"></col>
-<col width="4%" class="center"></col>
-<col width="82%"></col>
-</colgroup>
-<tr valign="top" align="left">
-<td></td>
-<td>
-
-
-<p><b>-l</b></p></td>
-<td></td>
-<td>
-
-
-<p>Use the local syslog facility to log that the check has
-been made and record the number of messages returned.</p></td></tr>
-</table>
-
-<p style="margin-left:11%;"><b>-m</b>
-<i>&lt;max&gt;</i></p>
-
-<p style="margin-left:18%;">Messages in excess of the
+       
+<p style="margin-left:11%"><b>-l</b>
+<p style="margin-left:11%">Use the local syslog facility to log that the check has
+been made and record the number of messages returned.</p>
+<p style="margin-left:11%;margin-left:11%;"><b>-m</b>
+<i>&lt;max&gt;</i>
+<p style="margin-left:11%;margin-left:18%;">Messages in excess of the
 <i>maximum</i> threshold will be moved to the
 <i>.Archive</i> sub-folders.</p>
-
-<table width="100%" border="0" rules="none" frame="void"
-       cellspacing="0" cellpadding="0">
-<colgroup><col width="11%"></col>
-<col width="3%"></col>
-<col width="4%" class="center"></col>
-<col width="17%"></col>
-<col width="65%"></col>
-</colgroup>
-<tr valign="top" align="left">
-<td></td>
-<td>
-
-
-<p><b>-n</b></p></td>
-<td></td>
-<td>
-
-
-<p><i>&lt;mail_addr&gt;</i></p></td>
-<td>
-</td></tr>
-</table>
-
-<p style="margin-left:18%; margin-top: 1em">Notifications
+       
+<p style="margin-left:11%"><b>-n</b>
+<p style="margin-left:11%"><i>&lt;mail_addr&gt;</i>
+<p style="margin-left:11%;margin-left:18%; margin-top: 1em">Notifications
 of the number of messages moved will be sent to &quot;
 <i>mail_addr</i>.</p>
-
-<table width="100%" border="0" rules="none" frame="void"
-       cellspacing="0" cellpadding="0">
-<colgroup><col width="11%"></col>
-<col width="3%"></col>
-<col width="4%" class="center"></col>
-<col width="31%"></col>
-<col width="51%"></col>
-</colgroup>
-<tr valign="top" align="left">
-<td></td>
-<td>
-
-
-<p style="margin-top: 1em"><b>-v</b></p></td>
-<td></td>
-<td>
-
-
-<p style="margin-top: 1em">Set verbose mode on.</p></td>
-<td>
-</td></tr>
-</table>
-
-
-<p style="margin-left:11%;"><i>&lt;mail_address&gt;</i></p>
-
-<p style="margin-left:18%;">If the mail domain cannot be
+       
+<p style="margin-left:11%;margin-top: 1em"><b>-v</b>
+<p style="margin-left:11%;margin-top: 1em">Set verbose mode on.</p>
+<p style="margin-left:11%;margin-left:11%;"><i>&lt;mail_address&gt;</i>
+<p style="margin-left:11%;margin-left:18%;">If the mail domain cannot be
 resolved then an error message is printed and the script
 exits.</p>
-
-<p style="margin-left:18%; margin-top: 1em">The mail domain
+<p style="margin-left:11%;margin-left:18%; margin-top: 1em">The mail domain
 name and mail user name is used to find the path to the
 INBOX current folder on the remote server.</p>
-
-<p style="margin-left:18%; margin-top: 1em">The base
+<p style="margin-left:11%;margin-left:18%; margin-top: 1em">The base
 directory is expected to be
 &quot;<i>/var/qmail/mailnames/</i>&quot; but this may be set
 in the <i>config</i> file.</p>
-
-<table width="100%" border="0" rules="none" frame="void"
-       cellspacing="0" cellpadding="0">
-<colgroup><col width="11%"></col>
-<col width="3%"></col>
-<col width="4%" class="center"></col>
-<col width="54%"></col>
-<col width="28%"></col>
-</colgroup>
-<tr valign="top" align="left">
-<td></td>
-<td>
-
-
-<p><b>-V</b></p></td>
-<td></td>
-<td>
-
-
-<p>Print the version details and exit.</p></td>
-<td>
-</td></tr>
-</table>
-
+       
+<p style="margin-left:11%"><b>-V</b>
+<p style="margin-left:11%">Print the version details and exit.</p>
 <h2 id="heading6">FILES
 </h2>
 
